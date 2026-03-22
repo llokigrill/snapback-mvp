@@ -82,7 +82,7 @@ export default function DropsShowcase() {
             The <span className="text-transparent bg-clip-text bg-gradient-to-r from-sb-yellow to-yellow-500">Playmakers</span>
           </h1>
           <p className="text-gray-400 font-medium md:text-xl max-w-2xl mx-auto mb-10">
-            Broadcasting the most dominant partnerships on the platform. Verify and shop exclusive collaborations between elite Creators and Pro Athletes.
+            Broadcasting the most dominant partnerships on the platform. Verify and shop exclusive collaborations between elite Fans and Pro Athletes.
           </p>
 
           <div className="relative max-w-2xl mx-auto">

@@ -12,20 +12,20 @@ export async function POST(request: Request) {
     const isVideo = dealType === 'Event Video';
     const athSplit = 100 - (fanSplit || 0);
 
-    const masterProposalText = `PARTNERSHIP PROPOSAL: ${productName}<br/><br/>Parties: ${fanName} ("Creator") and ${athleteName} ("Athlete")<br/>The Trigger Moment: ${isVideo ? 'Live Event Content' : 'Purely Creative NIL Design'}<br/>The Product: ${productName}<br/>Revenue Split: ${athSplit}% to Athlete / ${fanSplit}% to Creator<br/>Term: Active for ${termLength} from the date of first sale.<br/>Reporting: Monthly basis.`;
+    const masterProposalText = `PARTNERSHIP PROPOSAL: ${productName}<br/><br/>Parties: ${fanName} ("Fan") and ${athleteName} ("Athlete")<br/>The Trigger Moment: ${isVideo ? 'Live Event Content' : 'Purely Creative NIL Design'}<br/>The Product: ${productName}<br/>Revenue Split: ${athSplit}% to Athlete / ${fanSplit}% to Fan<br/>Term: Active for ${termLength} from the date of first sale.<br/>Reporting: Monthly basis.`;
 
     const publicityText = isVideo 
-      ? `LIMITED RIGHT OF PUBLICITY RELEASE<br/><br/>Grant: Athlete grants Creator (${fanName}) the right to use Athlete's name, image, and likeness (NIL) solely in connection with the production, marketing, and sale of the Merch Project stemming from the captured Event Media.<br/>Term-Bound: Strictly limited to ${termLength}.`
-      : `LIMITED RIGHT OF PUBLICITY & NIL RELEASE<br/><br/>Grant: Athlete explicitly grants Creator (${fanName}) the right to use Athlete's name, image, and likeness (NIL) and monetize their face solely for the preparation, sale, and launch of the Merch Project.<br/>Term-Bound: Strictly limited to ${termLength}. Upon expiration, Creator must cease all use unless renewed.<br/>Approval: Athlete has the right to approve the final design before sale.`;
+      ? `LIMITED RIGHT OF PUBLICITY RELEASE<br/><br/>Grant: Athlete grants Fan (${fanName}) the right to use Athlete's name, image, and likeness (NIL) solely in connection with the production, marketing, and sale of the Merch Project stemming from the captured Event Media.<br/>Term-Bound: Strictly limited to ${termLength}.`
+      : `LIMITED RIGHT OF PUBLICITY & NIL RELEASE<br/><br/>Grant: Athlete explicitly grants Fan (${fanName}) the right to use Athlete's name, image, and likeness (NIL) and monetize their face solely for the preparation, sale, and launch of the Merch Project.<br/>Term-Bound: Strictly limited to ${termLength}. Upon expiration, Fan must cease all use unless renewed.<br/>Approval: Athlete has the right to approve the final design before sale.`;
 
     const copyrightText = isVideo
-      ? `NON-EXCLUSIVE CONTENT LICENSE (EVENT MEDIA)<br/><br/>Grant of License: Creator (${fanName}) hereby grants Athlete a non-exclusive, sub-licensable, royalty-free license to use, reproduce, and display the Video/Media captured in perpetuity.<br/>Scope: Athlete may use the content for social media promotion, personal branding, and the specific Merch Project.<br/>Ownership: Creator retains all underlying copyright.`
-      : `NON-EXCLUSIVE CONTENT LICENSE (DESIGN WORK)<br/><br/>Grant of License: Creator (${fanName}) hereby grants Athlete a non-exclusive license to utilize the purely creative Merch Design for promotional purposes.<br/>Ownership: Creator retains all underlying copyright to the graphic/art elements they produced. Athlete does not own the design file but can use it as specified.`;
+      ? `NON-EXCLUSIVE CONTENT LICENSE (EVENT MEDIA)<br/><br/>Grant of License: Fan (${fanName}) hereby grants Athlete a non-exclusive, sub-licensable, royalty-free license to use, reproduce, and display the Video/Media captured in perpetuity.<br/>Scope: Athlete may use the content for social media promotion, personal branding, and the specific Merch Project.<br/>Ownership: Fan retains all underlying copyright.`
+      : `NON-EXCLUSIVE CONTENT LICENSE (DESIGN WORK)<br/><br/>Grant of License: Fan (${fanName}) hereby grants Athlete a non-exclusive license to utilize the purely creative Merch Design for promotional purposes.<br/>Ownership: Fan retains all underlying copyright to the graphic/art elements they produced. Athlete does not own the design file but can use it as specified.`;
 
     const emailBody = `
       <div style="font-family: sans-serif; color: #111; max-width: 600px; margin: auto;">
         <h2>Partnership Contract Automatically Executed</h2>
-        <p>This securely verifies that a legal NIL partnership has been electronically signed and fully executed on the AthleteConnect platform between <strong>${fanName}</strong> and <strong>${athleteName}</strong>.</p>
+        <p>This securely verifies that a legal NIL partnership has been electronically signed and fully executed on the million$NIL platform between <strong>${fanName}</strong> and <strong>${athleteName}</strong>.</p>
         
         <hr style="border:1px solid #eee; margin:20px 0" />
         
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
         <p><strong>Status:</strong> Legally Enacted as of ${new Date().toLocaleDateString()}</p>
         <p>You may both now proceed to production, distribution, and promotion. Ensure all escrow payouts respect the ${athSplit}/${fanSplit} split structure.</p>
         <br />
-        <small style="color: #666;">Powered by AthleteConnect Cryptographic Ledgers</small>
+        <small style="color: #666;">Powered by million$NIL Cryptographic Ledgers</small>
       </div>
     `;
 
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'AthleteConnect <onboarding@resend.dev>',
+        from: 'million$NIL <onboarding@resend.dev>',
         to: recipients,
         subject: `EXECUTED: ${productName} by ${fanName} x ${athleteName}`,
         html: emailBody,

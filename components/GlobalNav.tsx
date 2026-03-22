@@ -14,7 +14,7 @@ export function GlobalNav({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState<'fan' | 'athlete' | null>(null);
 
   // The publicly accessible URLs without authentication
-  const publicRoutes = ['/', '/login', '/signup', '/drops'];
+  const publicRoutes = ['/', '/login', '/signup', '/drops', '/athletes'];
 
   useEffect(() => {
     const supabase = createClient(
@@ -86,15 +86,18 @@ export function GlobalNav({ children }: { children: React.ReactNode }) {
       {!isBespokePage && (
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#111]/80 backdrop-blur-xl font-sans text-white">
           <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-3 group">
-              <Trophy className="w-8 h-8 text-sb-yellow group-hover:scale-110 transition-transform" />
-              <span className="text-2xl font-black tracking-tighter uppercase text-white">Snapback</span>
+            <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-px font-black tracking-tighter uppercase text-white hover:scale-105 transition-transform">
+              <span className="text-2xl lowercase">million</span>
+              <span className="text-2xl text-green-500">$</span>
+              <span className="text-2xl">NIL</span>
             </Link>
             
             {/* Core Global Links */}
             <nav className="hidden md:flex items-center gap-8 font-bold text-[10px] md:text-xs uppercase tracking-widest text-gray-400">
               <Link href="/drops" className={`hover:text-white transition-colors flex items-center gap-2 ${pathname === '/drops' ? 'text-sb-yellow' : ''}`}>Playmakers</Link>
-              {session && <Link href="/athletes" className={`hover:text-white transition-colors flex items-center gap-2 ${pathname === '/athletes' ? 'text-sb-yellow' : ''}`}><ShieldCheck className="w-4 h-4" /> {role === 'athlete' ? 'Creator Network' : 'Scout Roster'}</Link>}
+              <Link href="/athletes" className={`hover:text-white transition-colors flex items-center gap-2 ${pathname === '/athletes' ? 'text-sb-yellow' : ''}`}>
+                <ShieldCheck className="w-4 h-4" /> {role === 'athlete' ? 'Fan Network' : 'View Rosters'}
+              </Link>
               
               {session && role !== 'athlete' && <Link href="/proposals/draft" className={`hover:text-white transition-colors ${pathname.includes('/proposals') ? 'text-sb-yellow' : ''}`}>Deal Engine</Link>}
               {session && role === 'athlete' && <Link href="/vault" className={`hover:text-white transition-colors ${pathname.includes('/vault') ? 'text-sb-yellow' : ''}`}>Asset Vault</Link>}
@@ -102,9 +105,14 @@ export function GlobalNav({ children }: { children: React.ReactNode }) {
             
             <div className="flex items-center gap-4">
               {!session ? (
-                <Link href="/login" className="bg-sb-yellow text-sb-black px-6 py-3 rounded-full font-black uppercase text-xs tracking-widest hover:scale-105 hover:bg-yellow-400 transition-all shadow-[0_0_15px_rgba(247,223,2,0.2)]">
-                  Log In
-                </Link>
+                <>
+                  <Link href="/login" className="hidden md:block font-bold uppercase text-[10px] md:text-xs tracking-widest text-gray-300 hover:text-white transition-colors">
+                    Log In
+                  </Link>
+                  <Link href="/signup" className="bg-sb-yellow text-sb-black px-5 py-2.5 md:px-6 md:py-3 rounded-full font-black uppercase text-[10px] md:text-xs tracking-widest hover:scale-105 hover:shadow-[0_0_15px_rgba(247,223,2,0.2)] transition-all">
+                    Get Access
+                  </Link>
+                </>
               ) : (
                 <>
                   {pathname !== '/dashboard' && (

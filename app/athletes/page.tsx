@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Target, Search, Shield, MapPin, Zap, Flame, Frown, Award, Star, PenTool, CheckCircle, Image as ImageIcon, HardDrive, Share2, X } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -129,6 +130,8 @@ export default function ScoutDirectory() {
   const [searchQuery, setSearchQuery] = useState('');
   const [role, setRole] = useState<'fan' | 'athlete' | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
   const [requestedPitches, setRequestedPitches] = useState<Record<number, boolean>>({});
   const [inviteInput, setInviteInput] = useState('');
   const [inviteSent, setInviteSent] = useState(false);
@@ -153,6 +156,7 @@ export default function ScoutDirectory() {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
+        setIsLoggedIn(true);
         const { data: profile } = await supabase
           .from('profiles')
           .select('user_type')
@@ -165,6 +169,7 @@ export default function ScoutDirectory() {
           setRole('fan');
         }
       } else {
+        setIsLoggedIn(false);
         setRole('fan');
       }
       setLoading(false);
@@ -200,13 +205,19 @@ export default function ScoutDirectory() {
           <div>
             <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter flex items-center gap-4">
               <Target className="w-10 h-10 text-sb-yellow" />
-              {role === 'athlete' ? 'Scout Creator Network' : 'Scout The Roster'}
+              {role === 'athlete' ? 'Scout Fan Network' : 'Scout The Roster'}
             </h1>
             <p className="text-gray-400 mt-3 font-medium md:text-lg">
               {role === 'athlete' 
                 ? 'Discover elite Fans & Brands ready to execute your NIL into premium merchandise.' 
                 : 'Discover verifiable athletes ready for immediate NIL partnership pitches.'}
             </p>
+            {!isLoggedIn && (
+               <div className="flex flex-wrap gap-3 mt-6">
+                 <button onClick={() => setRole('fan')} className={`px-6 py-3 font-black text-xs uppercase tracking-widest rounded-full border ${role === 'fan' ? 'bg-sb-yellow text-sb-black border-sb-yellow shadow-[0_0_20px_rgba(247,223,2,0.3)]' : 'bg-[#111] text-gray-500 border-white/10 hover:border-white/30'} transition-all`}>Scout Athletes</button>
+                 <button onClick={() => setRole('athlete')} className={`px-6 py-3 font-black text-xs uppercase tracking-widest rounded-full border ${role === 'athlete' ? 'bg-sb-yellow text-sb-black border-sb-yellow shadow-[0_0_20px_rgba(247,223,2,0.3)]' : 'bg-[#111] text-gray-500 border-white/10 hover:border-white/30'} transition-all`}>Scout Fans</button>
+               </div>
+            )}
           </div>
           
           <div className="relative w-full md:w-96 shrink-0">
@@ -215,7 +226,7 @@ export default function ScoutDirectory() {
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={`Search ${role === 'athlete' ? 'creators' : 'athletes'}...`} 
+              placeholder={`Search ${role === 'athlete' ? 'fans' : 'athletes'}...`} 
               className="w-full bg-[#111] border border-white/10 rounded-full pl-12 pr-6 py-4 text-white focus:border-sb-yellow outline-none transition-all placeholder:text-gray-600 font-medium shadow-xl"
             />
           </div>
@@ -272,7 +283,7 @@ export default function ScoutDirectory() {
                      <div className="grid grid-cols-2 gap-4">
                         {/* Merch Preview */}
                         <div 
-                          onClick={() => setActivePortfolioCreator(creator)}
+                          onClick={() => isLoggedIn ? setActivePortfolioCreator(creator) : router.push('/signup')}
                           className="bg-black border border-white/10 rounded-xl overflow-hidden aspect-[4/3] relative group/preview cursor-pointer"
                         >
                            <img src={creator.merchPreview} className="w-full h-full object-cover opacity-80 group-hover/preview:scale-105 group-hover/preview:opacity-100 transition-all duration-500" />
@@ -300,8 +311,11 @@ export default function ScoutDirectory() {
                 </div>
 
                 <button 
-                  onClick={() => !requestedPitches[creator.id] && setActivePitchCreator(creator)}
-                  disabled={requestedPitches[creator.id]}
+                  onClick={() => {
+                    if (!isLoggedIn) return router.push('/signup');
+                    if (!requestedPitches[creator.id]) setActivePitchCreator(creator);
+                  }}
+                  disabled={isLoggedIn && requestedPitches[creator.id]}
                   className={`w-full font-black uppercase tracking-widest py-4 rounded-xl transition-all text-sm shadow-xl flex items-center justify-center gap-2 ${
                     requestedPitches[creator.id] 
                       ? 'bg-green-500/10 text-green-400 border border-green-500/20'
@@ -318,7 +332,7 @@ export default function ScoutDirectory() {
             )) : (
               <div className="col-span-full py-24 flex flex-col items-center justify-center text-center bg-[#111] border border-white/5 rounded-[2rem]">
                 <Target className="w-12 h-12 text-gray-800 mb-4" />
-                <h3 className="text-xl font-black uppercase tracking-widest text-gray-400 mb-2">No Creators Found</h3>
+                <h3 className="text-xl font-black uppercase tracking-widest text-gray-400 mb-2">No Fans Found</h3>
                 <p className="text-gray-500 font-medium text-sm">Expand your search to discover new talent.</p>
               </div>
             )}
@@ -361,12 +375,12 @@ export default function ScoutDirectory() {
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black to-transparent opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20 flex gap-2">
-                  <Link href={`/vault?athleteName=${encodeURIComponent(athlete.name)}&viewOnly=true`} className="flex-1 bg-[#222] text-white py-4 rounded-xl font-black uppercase text-[10px] xl:text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-white hover:text-black transition-colors shadow-2xl">
+                  <button onClick={() => isLoggedIn ? router.push(`/vault?athleteName=${encodeURIComponent(athlete.name)}&viewOnly=true`) : router.push('/signup')} className="flex-1 bg-[#222] text-white py-4 rounded-xl font-black uppercase text-[10px] xl:text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-white hover:text-black transition-colors shadow-2xl">
                     <HardDrive className="w-4 h-4 shrink-0" /> Vault
-                  </Link>
-                  <Link href={`/proposals/draft?athleteName=${encodeURIComponent(athlete.name)}`} className="flex-[1.5] bg-sb-yellow text-sb-black w-full py-4 rounded-xl font-black uppercase text-[10px] xl:text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors shadow-2xl">
+                  </button>
+                  <button onClick={() => isLoggedIn ? router.push(`/proposals/draft?athleteName=${encodeURIComponent(athlete.name)}`) : router.push('/signup')} className="flex-[1.5] bg-sb-yellow text-sb-black w-full py-4 rounded-xl font-black uppercase text-[10px] xl:text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-yellow-400 transition-colors shadow-2xl">
                     <Zap className="w-4 h-4 shrink-0" /> Pitch
-                  </Link>
+                  </button>
                 </div>
               </div>
             )) : (
@@ -381,7 +395,7 @@ export default function ScoutDirectory() {
             <div className="bg-gradient-to-b from-[#111] to-black border-2 border-dashed border-white/10 rounded-[2rem] p-10 flex flex-col items-center justify-center text-center group transition-all hover:border-sb-yellow/20 lg:col-span-1 md:col-span-2 shadow-2xl">
                 <Share2 className="w-12 h-12 text-sb-yellow mb-6" />
                 <h3 className="text-xl font-black uppercase text-white tracking-widest mb-2">Can't Find Your Athlete?</h3>
-                <p className="text-gray-400 font-medium text-sm mb-8 max-w-sm">We're expanding fast. Invite an athlete directly to Snapback and gain priority pitching access once they officially verify.</p>
+                <p className="text-gray-400 font-medium text-sm mb-8 max-w-sm">We're expanding fast. Invite an athlete directly to million$NIL and gain priority pitching access once they officially verify.</p>
                 
                 {inviteSent ? (
                   <div className="bg-green-500/10 text-green-400 border border-green-500/20 px-6 py-4 rounded-full font-black uppercase tracking-widest text-xs flex items-center gap-2">

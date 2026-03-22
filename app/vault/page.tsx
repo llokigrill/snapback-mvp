@@ -76,7 +76,7 @@ export default function AssetVault() {
             <p className="text-gray-400 mt-3 font-medium md:text-lg max-w-2xl">
               {isViewOnly 
                 ? 'Browse verified media directly from the athlete to inspire your next pitch.'
-                : 'Curate your exclusive media library to inspire the Creator Network. Fans pull directly from this vault to design your premium merchandise drops.'}
+                : 'Curate your exclusive media library to inspire the Fan Network. Fans pull directly from this vault to design your premium merchandise drops.'}
             </p>
           </div>
           {!isViewOnly && (
@@ -145,7 +145,7 @@ export default function AssetVault() {
           {!isViewOnly && (
             <div className="bg-gradient-to-b from-[#111] to-black border border-white/10 rounded-[2rem] p-8 h-fit shadow-2xl flex flex-col items-center justify-center text-center">
               <h3 className="text-xl font-black uppercase tracking-tight mb-2">Vault New Media</h3>
-              <p className="text-sm font-medium text-gray-400 mb-8 px-4">Secure raw footage, game-day content, or lifestyle shoots for Creators.</p>
+              <p className="text-sm font-medium text-gray-400 mb-8 px-4">Secure raw footage, game-day content, or lifestyle shoots for Fans.</p>
               
               <div 
                 className={`w-full border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center justify-center transition-all cursor-pointer ${
@@ -173,7 +173,7 @@ export default function AssetVault() {
                 <Camera className="w-5 h-5 text-sb-yellow shrink-0 mt-0.5" />
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-sb-yellow mb-1">Pro Tip</p>
-                  <p className="text-xs text-gray-400 font-medium leading-relaxed">High-resolution unedited RAW files give Creators the most flexibility for premium apparel and poster designs.</p>
+                  <p className="text-xs text-gray-400 font-medium leading-relaxed">High-resolution unedited RAW files give Fans the most flexibility for premium apparel and poster designs.</p>
                 </div>
               </div>
 
