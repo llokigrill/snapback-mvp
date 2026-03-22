@@ -7,29 +7,29 @@ import { EditProfileModal } from './EditProfileModal';
 
 // Dummy data for analytics and detailed tracking including optional AI variations
 const MOCK_DEALS = [
-  { id: 1, athlete: 'Trey Quarterback', product: 'Signature Cleats Tee', status: 'approved', type: 'Event Video', event: 'Rose Bowl 2026', revSplit: 60, termRemaining: '4 Months', date: 'Jan 15, 2026', revenue: '$1,240', thumbnail: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1572973415112-985834d8cc38?w=500&h=300&fit=crop' },
-  { id: 2, athlete: 'Sarah Sprinter', product: 'Gold Medal Graphic', status: 'approved', type: 'Design Only', event: null, revSplit: 70, termRemaining: '11 Months', date: 'Mar 01, 2026', revenue: '$320', thumbnail: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&h=300&fit=crop' },
-  { id: 3, athlete: 'Jax Fighter', product: 'Knockout Hoodie', status: 'rejected', type: 'Event Video', event: 'Las Vegas Fight Night', revSplit: 50, termRemaining: null, date: 'Feb 10, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1599552375127-142279144365?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1618648175373-ec14e5a95b87?w=500&h=300&fit=crop' },
-  { id: 4, athlete: 'Chloe Setter', product: 'Serve & Spike Longsleeve', status: 'draft', type: 'Design Only', event: null, revSplit: 65, termRemaining: null, date: 'Mar 19, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&h=300&fit=crop' },
-  { id: 5, athlete: 'Marcus Elite', product: 'Championship Varsity Jacket', status: 'draft', type: 'Event Video', event: 'Final Four 2026', revSplit: 70, termRemaining: null, date: 'Mar 20, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&h=300&fit=crop' }
+  { id: 1, athlete: 'Cameron Boozer', product: 'The C00ZER Heritage Collection', status: 'approved', type: 'Event Video', event: 'Duke Tournament Run', revSplit: 85, termRemaining: '4 Months', date: 'Jan 15, 2026', revenue: '$22,400', thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=500&h=300&fit=crop' },
+  { id: 2, athlete: 'AJ Dybantsa', product: 'BYU Post-Season Hoodie', status: 'approved', type: 'Design Only', event: null, revSplit: 70, termRemaining: '11 Months', date: 'Mar 01, 2026', revenue: '$14,320', thumbnail: 'https://images.unsplash.com/photo-1519861155730-0b5fbf0dd889?w=500&h=300&fit=crop' },
+  { id: 3, athlete: 'Yaxel Lendeborg', product: 'Wolverines Highlight Tee', status: 'rejected', type: 'Event Video', event: 'Michigan Elite Eight', revSplit: 50, termRemaining: null, date: 'Feb 10, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&h=300&fit=crop' },
+  { id: 4, athlete: 'Darryn Peterson', product: 'Kansas Graphic Longsleeve', status: 'draft', type: 'Design Only', event: null, revSplit: 65, termRemaining: null, date: 'Mar 19, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1515523110800-9415d13b84a8?w=500&h=300&fit=crop' },
+  { id: 5, athlete: 'Terrence Hill Jr.', product: 'VCU Upset Varsity Jacket', status: 'draft', type: 'Event Video', event: 'VCU vs UNC', revSplit: 70, termRemaining: null, date: 'Mar 20, 2026', revenue: '$0', thumbnail: 'https://images.unsplash.com/photo-1518063319789-7217e6706b04?w=500&h=300&fit=crop' }
 ];
 
 const MOCK_INBOUND_REQUESTS = [
   { 
-    id: 301, athleteName: 'Jax Fighter', sport: 'Welterweight • MMA', date: 'Just now', 
-    message: "Hey, I saw your pristine vintage designs. I'd love to partner up on exclusive walkout merch for my next Vegas fight. Please pitch me an official proposal.", 
-    avatar: 'https://images.unsplash.com/photo-1599552375127-142279144365?q=80&w=200&h=200&auto=format&fit=crop',
+    id: 301, athleteName: 'Tarris Reed Jr.', sport: 'UConn • Center', date: 'Just now', 
+    message: "Hey, I saw your pristine vintage designs. I just dropped 31 points and 27 rebounds in the tourney. I'd love to partner up on exclusive walkout merch for the next round. Please pitch me an official proposal.", 
+    avatar: 'https://images.unsplash.com/photo-1515523110800-9415d13b84a8?q=80&w=200&h=200&auto=format&fit=crop',
     vault: [
-      { id: 1, title: 'Locker Room Warmup', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1555597673-b21d5c935865?w=500&h=300&fit=crop' },
-      { id: 2, title: 'Press Conference Flex', type: 'Photography', thumbnail: 'https://images.unsplash.com/photo-1622384976731-1e96752dafcb?w=500&h=300&fit=crop' }
+      { id: 1, title: '31-Point Game Highlights', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=500&h=300&fit=crop' },
+      { id: 2, title: 'Locker Room Celebration', type: 'Photography', thumbnail: 'https://images.unsplash.com/photo-1518063319789-7217e6706b04?w=500&h=300&fit=crop' }
     ]
   },
   { 
-    id: 302, athleteName: 'Chloe Setter', sport: 'S • Volleyball', date: '2 hrs ago', 
-    message: "Love the sleek aesthetic of your merchandise! Send me a pitch for some Gen-Z lifestyle hoodies I can promote to my audience.", 
-    avatar: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=200&h=200&auto=format&fit=crop',
+    id: 302, athleteName: 'Pryce Sandfort', sport: 'Nebraska • Guard', date: '2 hrs ago', 
+    message: "Love the sleek aesthetic of your merchandise! Send me a pitch for some Gen-Z lifestyle hoodies I can promote to my audience after my 23-point breakout game.", 
+    avatar: 'https://images.unsplash.com/photo-1519861155730-0b5fbf0dd889?q=80&w=200&h=200&auto=format&fit=crop',
     vault: [
-      { id: 1, title: 'Game Winning Spike', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1595152452543-e5fc28ebc2b8?w=500&h=300&fit=crop' }
+      { id: 1, title: 'Breakaway Dunk', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?w=500&h=300&fit=crop' }
     ]
   }
 ];
@@ -167,11 +167,11 @@ export function FanDashboard({ profile }: { profile: any }) {
             </h2>
             <p className="text-sb-black/70 font-medium md:text-lg max-w-xl">
               {draftCount > 0 
-                ? 'You have an unfinished arrangement waiting for Marcus Elite. Lock in your margins, upload your media, and dispatch the contract for signature.' 
+                ? 'You have an unfinished arrangement waiting for Terrence Hill Jr.. Lock in your margins, upload your media, and dispatch the contract for signature.' 
                 : 'You currently have zero unfinished drafts. Head over to the athlete roster directory to scout verified talent and start modeling your next lucrative partnership.'}
             </p>
           </div>
-          <Link href={draftCount > 0 ? "/proposals/draft?athleteName=Marcus%20Elite" : "/athletes"} className="relative z-10 shrink-0 bg-sb-black text-white px-8 py-4 rounded-full font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl">
+          <Link href={draftCount > 0 ? "/proposals/draft?athleteName=Terrence%20Hill%20Jr" : "/athletes"} className="relative z-10 shrink-0 bg-sb-black text-white px-8 py-4 rounded-full font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl">
             {draftCount > 0 ? 'Edit Proposal' : 'Scout Directory'}
             <ArrowRight className="w-5 h-5 text-sb-yellow" />
           </Link>

@@ -13,12 +13,12 @@ const MOCK_CREATORS = [
 ];
 
 const MOCK_INBOX = [
-  { id: 101, fan: 'Retro Gridiron Hub', product: 'Signature Cleats Tee', status: 'pending', revSplit: 40, termRemaining: '4 Months', date: 'Mar 20, 2026', type: 'Design Only', thumbnail: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=500&h=300&fit=crop', aiDesign: null },
-  { id: 102, fan: 'Courtside Captures', product: 'Buzzer Beater Poster', status: 'pending', revSplit: 50, termRemaining: '12 Months', date: 'Mar 19, 2026', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1572973415112-985834d8cc38?w=500&h=300&fit=crop' },
+  { id: 101, fan: 'Retro Gridiron Hub', product: 'Tournament Run Tee', status: 'pending', revSplit: 40, termRemaining: '4 Months', date: 'Mar 20, 2026', type: 'Design Only', thumbnail: 'https://images.unsplash.com/photo-1519861155730-0b5fbf0dd889?w=500&h=300&fit=crop', aiDesign: null },
+  { id: 102, fan: 'Courtside Captures', product: 'Buzzer Beater Poster', status: 'pending', revSplit: 50, termRemaining: '12 Months', date: 'Mar 19, 2026', type: 'Event Video', thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&h=300&fit=crop', aiDesign: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=500&h=300&fit=crop' },
 ];
 
 const MOCK_ACTIVE_DEALS = [
-  { id: 201, fan: 'Varsity Customs', product: 'Championship Varsity Jacket', status: 'active', revSplit: 30, termRemaining: '10 Months', revenue: '$3,450', thumbnail: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=500&h=300&fit=crop' },
+  { id: 201, fan: 'Varsity Customs', product: 'Championship Varsity Jacket', status: 'active', revSplit: 30, termRemaining: '10 Months', revenue: '$3,450', thumbnail: 'https://images.unsplash.com/photo-1518063319789-7217e6706b04?w=500&h=300&fit=crop' },
 ];
 
 export function AthleteDashboard({ profile }: { profile: any }) {
