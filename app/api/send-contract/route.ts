@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { dealId, fanName, athleteName, athleteEmail, fanEmail, productName, termLength, dealType, fanSplit } = await request.json();
+    const { dealId, fanName, athleteName, athleteEmail, fanEmail, productName, termLength, dealType, fanSplit, thumbnailUrl, aiDesignUrl } = await request.json();
 
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     if (!RESEND_API_KEY) {
@@ -39,6 +39,15 @@ export async function POST(request: Request) {
         <p style="background:#f9f9f9; padding:15px; border-left:4px solid #F6DF02">${copyrightText}</p>
 
         <hr style="border:1px solid #eee; margin:20px 0" />
+        
+        <h3>Exhibit A: Approved Creative Media</h3>
+        <p>The following digital media is legally bound to this Master Proposal Agreement.</p>
+        <div style="margin-top: 15px; padding-bottom: 20px;">
+          ${thumbnailUrl ? `<div style="display: inline-block; vertical-align: top; margin-right: 20px; text-align: center;"><img src="${thumbnailUrl}" style="width: 200px; height: auto; border-radius: 8px; border: 1px solid #ddd;" /><br/><span style="font-size: 11px; color: #666; font-weight: bold;">SOURCE MEDIA</span></div>` : ''}
+          ${aiDesignUrl ? `<div style="display: inline-block; vertical-align: top; margin-right: 20px; text-align: center;"><img src="${aiDesignUrl}" style="width: 200px; height: auto; border-radius: 8px; border: 4px solid #F6DF02;" /><br/><span style="font-size: 11px; color: #666; font-weight: bold;">AI PROPOSAL DESIGN</span></div>` : ''}
+        </div>
+
+        <hr style="border:1px solid #eee; margin:20px 0" />
         <p><strong>Status:</strong> Legally Enacted as of ${new Date().toLocaleDateString()}</p>
         <p>You may both now proceed to production, distribution, and promotion. Ensure all earnings payouts respect the ${athSplit}/${fanSplit} split structure.</p>
         <br />
@@ -46,9 +55,10 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    // Resend natively handles sending to multiple recipients via string array
-    // We deduplicate identically logged emails using a Set just in case
-    const recipients = Array.from(new Set([athleteEmail, fanEmail].filter(Boolean)));
+    // For the unverified MVP testing environment, Resend strictly requires all emails to
+    // route only to your verified account address. If you pass a fake "athlete@gmail.com"
+    // the system throws an instant block. We will route all demo receipts to your verified inbox.
+    const recipients = ['llokigrill@gmail.com'];
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',

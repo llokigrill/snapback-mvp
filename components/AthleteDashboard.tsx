@@ -92,7 +92,9 @@ export function AthleteDashboard({ profile }: { profile: any }) {
           productName: deal.product,
           termLength: deal.termRemaining,
           dealType: deal.type,
-          fanSplit: deal.revSplit
+          fanSplit: deal.revSplit,
+          thumbnailUrl: deal.thumbnail,
+          aiDesignUrl: deal.aiDesign
         })
       });
       
