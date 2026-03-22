@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
         <hr style="border:1px solid #eee; margin:20px 0" />
         <p><strong>Status:</strong> Legally Enacted as of ${new Date().toLocaleDateString()}</p>
-        <p>You may both now proceed to production, distribution, and promotion. Ensure all escrow payouts respect the ${athSplit}/${fanSplit} split structure.</p>
+        <p>You may both now proceed to production, distribution, and promotion. Ensure all earnings payouts respect the ${athSplit}/${fanSplit} split structure.</p>
         <br />
         <small style="color: #666;">Powered by million$NIL Cryptographic Ledgers</small>
       </div>

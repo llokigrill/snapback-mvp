@@ -36,6 +36,31 @@ export function AthleteDashboard({ profile }: { profile: any }) {
   const [enlargedMedia, setEnlargedMedia] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
 
+  // NIL Calculator state
+  const [showNilCalculator, setShowNilCalculator] = useState(false);
+  const [nilSocialFollowing, setNilSocialFollowing] = useState('');
+  const [nilGameDate, setNilGameDate] = useState('');
+  const [nilTelevised, setNilTelevised] = useState(false);
+  const [nilInterviewed, setNilInterviewed] = useState(false);
+  const [nilEstimate, setNilEstimate] = useState<string | null>(null);
+
+  const calculateNilEstimate = () => {
+    const following = parseInt(nilSocialFollowing.replace(/[^0-9]/g, '') || '0');
+    let baseValue = following * 0.05;
+    if (nilTelevised) baseValue *= 1.5;
+    if (nilInterviewed) baseValue *= 1.5;
+    if (nilGameDate) {
+      const gDate = new Date(nilGameDate);
+      const today = new Date();
+      const diffTime = Math.abs(today.getTime() - gDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays <= 7) baseValue *= 1.2;
+    }
+    const lowEnd = Math.max(10, Math.floor(baseValue * 0.8));
+    const highEnd = Math.floor(baseValue * 1.2);
+    setNilEstimate(`$${lowEnd.toLocaleString()} - $${highEnd.toLocaleString()}`);
+  };
+
   const toggleExpand = (id: number) => setExpandedRow(prev => prev === id ? null : id);
 
   const totalEscrow = MOCK_ACTIVE_DEALS.reduce((acc, deal) => acc + parseInt(deal.revenue.replace(/[^0-9]/g, '')), 0);
@@ -241,23 +266,24 @@ Reporting: Payouts to be processed securely on a Monthly basis.</p>
         {/* Analytics Section */}
         <div className="mb-10">
           <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-4 flex items-center gap-2">
-            <DollarSign className="w-4 h-4" /> Lifetime Earnings & Escrow
+            <DollarSign className="w-4 h-4" /> Lifetime Earnings
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <div className="bg-[#111] border border-white/10 p-6 rounded-3xl flex flex-col justify-center">
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Escrow Cleared</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Earnings Cleared</p>
               <p className="text-4xl font-black text-white">${totalEscrow.toLocaleString()}</p>
             </div>
             <div className="bg-[#111] border border-white/10 p-6 rounded-3xl flex flex-col justify-center">
               <p className="text-xs font-bold uppercase tracking-widest text-sb-yellow mb-2">Pending Offers</p>
               <p className="text-4xl font-black text-white">{MOCK_INBOX.length}</p>
             </div>
-            <div className="bg-[#111] border border-white/10 p-6 rounded-3xl flex items-center gap-6 justify-between">
-               <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">Platform Rank</p>
-                  <p className="text-3xl font-black text-white">Pro</p>
-               </div>
-               <Award className="w-16 h-16 text-gray-700 opacity-50" />
+            <div 
+              className="bg-[#111] border border-white/10 p-6 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:border-sb-yellow/50 transition-colors group relative overflow-hidden" 
+              onClick={() => setShowNilCalculator(true)}
+            >
+               <Target className="w-8 h-8 text-sb-yellow mb-2 opacity-80 group-hover:scale-110 transition-transform" />
+               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1 text-center">NIL Estimate</p>
+               <p className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">Calculate Value <ChevronDown className="w-4 h-4 -rotate-90 text-sb-yellow" /></p>
             </div>
           </div>
         </div>
@@ -466,6 +492,54 @@ Reporting: Payouts to be processed securely on a Monthly basis.</p>
           onClose={() => setIsEditingProfile(false)} 
           onUpdated={() => window.location.reload()} 
         />
+      )}
+
+      {showNilCalculator && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 animate-in fade-in duration-200">
+           <button 
+             onClick={() => { setShowNilCalculator(false); setNilEstimate(null); }} 
+             className="absolute md:top-8 md:right-8 top-4 right-4 text-white hover:text-sb-yellow bg-white/5 hover:bg-white/10 p-3 rounded-full transition-colors z-10"
+           >
+             <X className="w-6 h-6" />
+           </button>
+           <div className="bg-[#111] border border-white/10 p-8 rounded-[2rem] max-w-md w-full relative">
+              <h3 className="text-2xl font-black uppercase text-white tracking-tight mb-6">NIL Value Calculator</h3>
+              
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Current Social Following</label>
+                  <input type="number" placeholder="e.g. 15000" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-sb-yellow outline-none" value={nilSocialFollowing} onChange={e => setNilSocialFollowing(e.target.value)} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Date of Last Game</label>
+                  <input type="date" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-sb-yellow outline-none [color-scheme:dark]" value={nilGameDate} onChange={e => setNilGameDate(e.target.value)} />
+                </div>
+                <div className="flex items-center justify-between bg-black border border-white/10 rounded-xl p-4 cursor-pointer" onClick={() => setNilTelevised(!nilTelevised)}>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 cursor-pointer">Was it televised?</label>
+                  <div className={`w-12 h-6 rounded-full transition-colors relative flex items-center ${nilTelevised ? 'bg-sb-yellow' : 'bg-gray-800'}`}>
+                    <div className={`w-4 h-4 rounded-full bg-black absolute transition-all ${nilTelevised ? 'left-7' : 'left-1'}`} />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between bg-black border border-white/10 rounded-xl p-4 cursor-pointer" onClick={() => setNilInterviewed(!nilInterviewed)}>
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 cursor-pointer">Were you interviewed?</label>
+                  <div className={`w-12 h-6 rounded-full transition-colors relative flex items-center ${nilInterviewed ? 'bg-sb-yellow' : 'bg-gray-800'}`}>
+                    <div className={`w-4 h-4 rounded-full bg-black absolute transition-all ${nilInterviewed ? 'left-7' : 'left-1'}`} />
+                  </div>
+                </div>
+              </div>
+
+              <button onClick={calculateNilEstimate} className="w-full bg-sb-yellow hover:bg-yellow-400 text-black font-black uppercase tracking-widest py-4 rounded-xl transition-all text-sm mb-4 shrink-0 shadow-[0_0_20px_rgba(247,223,2,0.1)]">
+                Calculate Estimate
+              </button>
+
+              {nilEstimate && (
+                <div className="mt-6 pt-6 border-t border-white/10 text-center animate-in slide-in-from-bottom-2">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Estimated Value Per Deal</p>
+                  <p className="text-4xl font-black text-green-400">{nilEstimate}</p>
+                </div>
+              )}
+           </div>
+        </div>
       )}
     </div>
   );
