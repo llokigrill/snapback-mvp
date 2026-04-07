@@ -76,6 +76,9 @@ export default function Home() {
               <Link href="/signup?role=athlete" className="px-8 py-4 rounded-full font-black uppercase tracking-widest flex items-center justify-center gap-3 border-2 border-white/20 hover:border-white transition-all active:scale-95 duration-300">
                 I am an Athlete
               </Link>
+              <Link href="/signup?role=business" className="px-8 py-4 rounded-full font-black uppercase tracking-widest flex items-center justify-center gap-3 bg-white/10 text-white hover:bg-white hover:text-black transition-all active:scale-95 duration-300 backdrop-blur-sm border border-white/10 hover:border-white">
+                For Brands
+              </Link>
             </div>
           </div>
           

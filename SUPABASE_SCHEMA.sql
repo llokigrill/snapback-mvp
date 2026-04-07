@@ -1,4 +1,5 @@
 -- 1. DROP EXISTING TABLES/TYPES TO ENSURE A CLEAN SLATE
+DROP TABLE IF EXISTS public.business_campaigns CASCADE;
 DROP TABLE IF EXISTS public.proposals CASCADE;
 DROP TABLE IF EXISTS public.media_assets CASCADE;
 DROP TABLE IF EXISTS public.events CASCADE;
@@ -8,7 +9,7 @@ DROP TYPE IF EXISTS asset_format_type CASCADE;
 DROP TYPE IF EXISTS proposal_status_type CASCADE;
 
 -- 2. CREATE ENUMS
-CREATE TYPE user_account_type AS ENUM ('fan', 'athlete');
+CREATE TYPE user_account_type AS ENUM ('fan', 'athlete', 'business');
 CREATE TYPE asset_format_type AS ENUM ('photo', 'video', 'external_link');
 CREATE TYPE proposal_status_type AS ENUM ('draft', 'pending', 'accepted', 'rejected');
 
@@ -113,11 +114,33 @@ CREATE TRIGGER update_proposals_modtime
 BEFORE UPDATE ON public.proposals
 FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
 
+-- 6.5 BUSINESS CAMPAIGNS TABLE
+CREATE TABLE public.business_campaigns (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    business_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    athlete_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    status proposal_status_type DEFAULT 'draft',
+    campaign_title TEXT NOT NULL,
+    offer_amount DECIMAL(10, 2) NOT NULL,
+    deliverables TEXT NOT NULL,
+    timeline_days INT NOT NULL,
+    contract_text TEXT,
+    signed_by_business_at TIMESTAMPTZ,
+    signed_by_athlete_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TRIGGER update_business_campaigns_modtime
+BEFORE UPDATE ON public.business_campaigns
+FOR EACH ROW EXECUTE PROCEDURE set_updated_at();
+
 -- 7. ROW LEVEL SECURITY (RLS) POLICIES
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.media_assets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.proposals ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.business_campaigns ENABLE ROW LEVEL SECURITY;
 
 -- Profiles: Anyone can view, but only users can update their own
 CREATE POLICY "Public profile viewing" ON public.profiles FOR SELECT USING (true);
@@ -138,3 +161,11 @@ CREATE POLICY "Fans can draft proposals" ON public.proposals
     FOR INSERT WITH CHECK (auth.uid() = fan_id);
 CREATE POLICY "Involved parties can update proposals" ON public.proposals 
     FOR UPDATE USING (auth.uid() = fan_id OR auth.uid() = athlete_id);
+
+-- Business Campaigns: Viewable and updatable only by the specific business and athlete
+CREATE POLICY "Campaigns viewable by involved parties" ON public.business_campaigns 
+    FOR SELECT USING (auth.uid() = business_id OR auth.uid() = athlete_id);
+CREATE POLICY "Businesses can draft campaigns" ON public.business_campaigns 
+    FOR INSERT WITH CHECK (auth.uid() = business_id);
+CREATE POLICY "Involved parties can update campaigns" ON public.business_campaigns 
+    FOR UPDATE USING (auth.uid() = business_id OR auth.uid() = athlete_id);

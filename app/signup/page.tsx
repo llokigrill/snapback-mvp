@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import { User, Shield, ArrowRight } from 'lucide-react';
+import { User, Shield, Briefcase, ArrowRight } from 'lucide-react';
 
 export default function SignupPage() {
   const [errorMsg, setErrorMsg] = useState('');
@@ -78,11 +78,11 @@ export default function SignupPage() {
 
         <form onSubmit={handleSignUp} className="space-y-6 relative z-10">
           
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <label className="cursor-pointer group" onClick={() => setActiveRole('fan')}>
               <input type="radio" name="user_type" value="fan" className="peer sr-only" checked={activeRole === 'fan'} readOnly />
               <div className="p-4 rounded-2xl border-2 border-white/10 bg-black/50 hover:bg-white/5 transition-all peer-checked:border-sb-yellow peer-checked:bg-sb-yellow/10 flex flex-col items-center gap-3 text-center h-full">
-                <User className="w-8 h-8 text-gray-500 peer-checked:text-sb-yellow transition-colors" />
+                <User className="w-6 sm:w-8 h-6 sm:h-8 text-gray-500 peer-checked:text-sb-yellow transition-colors" />
                 <div>
                   <div className="text-white font-bold uppercase text-xs tracking-widest mb-1">I am a Fan</div>
                   <div className="text-gray-500 text-[10px] leading-tight">Draft proposals and secure athlete partnerships.</div>
@@ -93,10 +93,21 @@ export default function SignupPage() {
             <label className="cursor-pointer group" onClick={() => setActiveRole('athlete')}>
               <input type="radio" name="user_type" value="athlete" className="peer sr-only" checked={activeRole === 'athlete'} readOnly />
               <div className="p-4 rounded-2xl border-2 border-white/10 bg-black/50 hover:bg-white/5 transition-all peer-checked:border-sb-yellow peer-checked:bg-sb-yellow/10 flex flex-col items-center gap-3 text-center h-full">
-                <Shield className="w-8 h-8 text-gray-500 peer-checked:text-sb-yellow transition-colors" />
+                <Shield className="w-6 sm:w-8 h-6 sm:h-8 text-gray-500 peer-checked:text-sb-yellow transition-colors" />
                 <div>
                   <div className="text-white font-bold uppercase text-xs tracking-widest mb-1">I am an Athlete</div>
                   <div className="text-gray-500 text-[10px] leading-tight">Accept deals, sign merch, and monetize your NIL.</div>
+                </div>
+              </div>
+            </label>
+            
+            <label className="cursor-pointer group" onClick={() => setActiveRole('business')}>
+              <input type="radio" name="user_type" value="business" className="peer sr-only" checked={activeRole === 'business'} readOnly />
+              <div className="p-4 rounded-2xl border-2 border-white/10 bg-black/50 hover:bg-white/5 transition-all peer-checked:border-sb-yellow peer-checked:bg-sb-yellow/10 flex flex-col items-center gap-3 text-center h-full">
+                <Briefcase className="w-6 sm:w-8 h-6 sm:h-8 text-gray-500 peer-checked:text-sb-yellow transition-colors" />
+                <div>
+                  <div className="text-white font-bold uppercase text-[10px] sm:text-xs tracking-widest mb-1 text-balance">I'm a Business, man</div>
+                  <div className="text-gray-500 text-[10px] leading-tight">Propose high-value verified brand campaigns.</div>
                 </div>
               </div>
             </label>
@@ -105,7 +116,7 @@ export default function SignupPage() {
           <div className="space-y-4">
             <div>
               <label className="text-[10px] font-black uppercase text-gray-500 tracking-[0.2em] block mb-2">Stage Name / Full Name</label>
-              <input name="full_name" required placeholder={activeRole === 'fan' ? "Jordan Fan" : "Marcus Elite"} className="w-full bg-black border border-white/10 rounded-xl px-5 py-4 text-white hover:border-white/20 focus:border-sb-yellow focus:ring-1 focus:ring-sb-yellow outline-none transition-all placeholder:text-gray-700 font-medium" />
+              <input name="full_name" required placeholder={activeRole === 'fan' ? "Jordan Fan" : activeRole === 'business' ? "Acme Sports Inc." : "Marcus Elite"} className="w-full bg-black border border-white/10 rounded-xl px-5 py-4 text-white hover:border-white/20 focus:border-sb-yellow focus:ring-1 focus:ring-sb-yellow outline-none transition-all placeholder:text-gray-700 font-medium" />
             </div>
             <div>
               <label className="text-[10px] font-black uppercase text-gray-500 tracking-[0.2em] block mb-2">Email Address</label>

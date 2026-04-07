@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { FanDashboard } from '@/components/FanDashboard';
 import { AthleteDashboard } from '@/components/AthleteDashboard';
+import { BusinessDashboard } from '@/components/BusinessDashboard';
 import { Loader2 } from 'lucide-react';
 
 export default function DashboardRouter() {
@@ -42,6 +43,10 @@ export default function DashboardRouter() {
   // Branch explicitly based on the strict ENUM configured in the Supabase schema
   if (profile?.user_type === 'athlete') {
     return <AthleteDashboard profile={profile} />;
+  }
+  
+  if (profile?.user_type === 'business') {
+    return <BusinessDashboard profile={profile} />;
   }
   
   return <FanDashboard profile={profile} />;
